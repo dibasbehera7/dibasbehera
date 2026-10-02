@@ -1,0 +1,103 @@
+schema: spec-driven
+stack: java, spring boot, react, nextjs, python, docker, terraform, aws, kubernetes, helm, ansible, prometheus, grafana
+
+context: |
+  Tech stack: Java, Spring Boot, React, Next.js, Python, Docker, Terraform, AWS, Kubernetes, Helm, Ansible, Prometheus, Grafana
+  We follow clean code principles and maintain high test coverage.
+  Domain: website application development and deployment
+
+rules:
+  proposal:
+    - Keep proposals under 500 words
+    - Always include a "Non-goals" section
+    - Must use grill-me skill
+    - Clearly define the problem statement, business objective, scope, and non-goals.
+    - Include functional and non-functional requirements, acceptance criteria, and success metrics.
+    - Document assumptions, dependencies, compatibility impact, and rollback requirements.
+    - Identify operational and data-consistency risks.
+  specs:
+    - Must use gherkin-authoring skill
+    - Clearly define the API endpoints, request/response formats, and data models.
+    - Use OpenAPI 3.0 for API specifications
+    - Include request/response examples and error handling
+    - Document authentication and authorization mechanisms
+    - Specify rate limiting and throttling policies
+    - Include versioning and deprecation strategies
+    - Document integration points with external systems and services
+    - Specify performance benchmarks, load testing results, and optimization strategies
+    - Document security measures, compliance requirements, and monitoring strategies
+    - Include localization, internationalization, and accessibility considerations
+    - Document data privacy, retention policies, and compliance with regulations (e.g., GDPR, HIPAA)
+    - Specify disaster recovery, backup strategies, and business continuity plans
+    - Document logging, monitoring, and alerting strategies for system health and performance
+    - Include scalability, high availability, and fault tolerance considerations in the specifications
+    - Document testing strategies, test cases, and quality assurance processes
+    - Document code review processes, coding standards, and best practices
+    - Include documentation for third-party libraries, frameworks, and dependencies
+    - Specify deployment strategies, CI/CD pipelines, and rollback procedures
+    - Document operational runbooks, troubleshooting guides, and maintenance procedures
+    - Document versioning, change management, and release notes
+  design:
+    - Must use design-review skill
+    - Must use c4-diagrams skill
+    - Reference existing repository patterns before proposing a new pattern.
+    - Document component responsibilities, interfaces, dependencies and end-to-end flow.
+    - Define API, database, OpenSearch, Airflow, and other integration points.
+    - Include architecture diagrams, component interactions, and data flow diagrams.
+    - Document design patterns, trade-offs, and scalability considerations.
+    - Specify security measures, compliance requirements, and monitoring strategies.
+    - Include performance benchmarks, load testing results, and optimization strategies.
+    - Document deployment strategies, CI/CD pipelines, and rollback procedures.
+    - Include operational runbooks, troubleshooting guides, and maintenance procedures.
+    - Document versioning, change management, and release notes.
+    - Specify testing strategies, test cases, and quality assurance processes.
+    - Document code review processes, coding standards, and best practices.
+    - Include documentation for third-party libraries, frameworks, and dependencies.
+    - Specify localization, internationalization, and accessibility considerations.
+    - Document data privacy, retention policies, and compliance with regulations (e.g., GDPR, HIPAA).
+    - Specify disaster recovery, backup strategies, and business continuity plans.
+    - Document logging, monitoring, and alerting strategies for system health and performance.
+    - Include scalability, high availability, and fault tolerance considerations in the design.
+  adr:
+    - Must use adr skill
+    - Document architectural decisions, trade-offs, and rationale.
+    - Include diagrams, flowcharts, and visual representations of the architecture.
+    - Specify performance benchmarks, load testing results, and optimization strategies.
+  tasks:
+    - Break tasks into chunks of max 1 hour each. A task that cannot be finished and independently verified inside an hour is too large; split it until each part has its own acceptance criteria and its own test evidence.
+    - Include clear acceptance criteria and success metrics for each task
+    - Document dependencies, prerequisites, and potential blockers for each task
+    - Specify testing strategies, test cases, and quality assurance processes for each task
+    - Must include pytest automation and manual seeded-data acceptance verification for each task
+    - Each task must be independently understanable and verifiable, with clear input/output expectations and success criteria.
+    - Map every task to requuiement or design decission.
+    - Indentify the exact files or components expected to change.
+    - Include implementation, tests, configuration, and validation work.
+    - Keep tasks small enough for focused implementation and review, but large enough to provide meaningful progress.
+    - Do not combine unrelated changes into a single task; each task should have a clear and specific purpose.
+    - Include explicit completion and verification ceriteria for each task, ensuring that the task can be independently validated and closed.
+
+operations:
+  apply:
+    guidance:
+      - Implement only the selected approved task.
+      - Read the proposal, specifications, design, and task list before modifying code.
+      - Inspect exisitng code and test before implementing the task.
+      - Do not redesign the approved solution or change the requirements during implementation.
+      - If the design is incomplete or contradictory, stop and report the gap before proceeding.
+      - Add or update unit and integration tests with the implmentation.
+      - Preserve backward compatibilitiy unless the specification explicitly permits a breaking change.
+      - Run focused validation before marking a task complete.
+      - Do not mark tasks compelete when tests or required checks fail.
+      - Keep test summaries concise
+      - Document any deviations from the original plan and their rationale
+      - Include lessons learned and recommendations for future improvements
+  archive:
+    guidance:
+      - Summarize the archive outcome before finishing
+      - Document any unresolved issues or follow-up actions required
+      - Verify that implementation and tests satisfy all acceptance criteria and success metrics defined in the proposal, specifications, design, and task list
+      - Confirm that tasks are complete and specifications reflect delivered behavior.
+      - Record known issues, limitations, follow up actions, or any deviations from the original plan.
+      - Do not archive changes with unresolved critical findings or failing tests.
+      - Include a retrospective analysis of the project, highlighting successes and areas for improvement
