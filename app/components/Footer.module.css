@@ -1,0 +1,25 @@
+.footer {
+  margin: var(--space-5) calc(var(--space-4) * -1) calc(var(--space-4) * -1);
+  padding: var(--space-4);
+  background: var(--color-bar);
+  color: var(--color-on-bar);
+  text-align: center;
+}
+
+.text {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.text a {
+  color: var(--color-on-bar);
+  font-weight: 600;
+}
+
+.divider {
+  opacity: 0.7;
+}

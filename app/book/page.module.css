@@ -1,0 +1,36 @@
+.booking {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 60rem;
+}
+
+.duration {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--color-muted);
+}
+
+.price {
+  margin: 0;
+  font-weight: 600;
+}
+
+.fallback {
+  margin: 0;
+}
+
+.fallbackLink {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.note {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}

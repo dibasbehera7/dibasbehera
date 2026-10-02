@@ -3,6 +3,8 @@ name: Deploy site to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -11,29 +13,69 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  build:
+  # Every check below gates the publish step: a failing check leaves the
+  # currently published site untouched.
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+
       - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
+
       - run: npm ci
-      - run: npm run build
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit and component tests
+        run: npm test
+
+      - name: External repository links resolve
+        run: npm test
+        env:
+          # Opts the network-gated link check in; skipped in the run above.
+          CHECK_EXTERNAL_LINKS: "1"
+
+      - name: Build
+        run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /dibasbehera
-      - uses: actions/configure-pages@v5
+
+      - name: Bundle budget, internal links, and booking isolation
+        run: npm run verify:site
+        env:
+          NEXT_PUBLIC_BASE_PATH: /dibasbehera
+
+      - name: Route names do not collide with published project sites
+        run: npm run check:collisions
+
+      - name: Lighthouse accessibility and performance thresholds
+        run: npm run lighthouse
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+        with:
+          enablement: false
+
       - uses: actions/upload-pages-artifact@v4
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           path: out
 
   deploy:
-    needs: build
+    needs: verify
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

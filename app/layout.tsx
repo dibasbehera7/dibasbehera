@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,21 +16,28 @@ export const viewport = {
 /**
  * GitHub Pages serves static files and does not let a repository set arbitrary
  * response headers, so the Content-Security-Policy is delivered as a meta tag.
- * Third-party origins are added when the booking embed is introduced.
+ *
+ * `frame-ancestors` is deliberately absent: it is ignored when a CSP is
+ * delivered via a <meta> element, and including it logs a console error. Clickjacking
+ * protection would need a real response header, which GitHub Pages does not offer.
+ *
+ * `https://app.cal.com` is the only third-party origin: it loads the booking
+ * embed's script and is the frame the calendar is served in. No analytics or
+ * advertising origin is permitted.
  */
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' https://app.cal.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data:",
-  "font-src 'self'",
-  "connect-src 'self'",
-  "frame-ancestors 'none'",
+  "img-src 'self' data: https://app.cal.com",
+  "font-src 'self' https://app.cal.com",
+  "connect-src 'self' https://app.cal.com",
+  "frame-src https://cal.com https://app.cal.com",
   "base-uri 'self'",
   "form-action 'self'",
 ].join("; ");
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>

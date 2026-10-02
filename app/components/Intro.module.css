@@ -1,0 +1,4 @@
+.intro { display: flex; flex-direction: column; gap: var(--space-2); }
+.role { font-size: var(--text-lg); color: var(--color-accent); font-weight: 600; }
+.tagline { font-size: var(--text-xl); font-weight: 500; }
+.body { color: var(--color-muted); max-width: 65ch; }

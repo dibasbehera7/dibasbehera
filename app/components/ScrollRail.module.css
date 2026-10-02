@@ -1,0 +1,27 @@
+/* Shared rail styles for any horizontally scrollable card rail. */
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.rail {
+  display: flex;
+  gap: var(--space-4);
+  list-style: none;
+  padding: var(--space-1) var(--space-1) var(--space-2);
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  /* Hide the native scrollbar track while keeping scrolling behaviour. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}

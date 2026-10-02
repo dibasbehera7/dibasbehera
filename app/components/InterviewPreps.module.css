@@ -1,0 +1,164 @@
+@import './ScrollRail.module.css';
+
+.preps h2 {
+  margin-bottom: var(--space-4);
+}
+
+.card {
+  position: relative;
+  flex: 0 0 min(18rem, 76vw);
+  scroll-snap-align: start;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+}
+
+.topics {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: 0;
+  margin: 0;
+}
+
+.topic {
+  font-size: var(--text-sm);
+  background: var(--color-chip);
+  color: var(--color-chip-text);
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-3);
+}
+
+.links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0;
+  margin-top: auto;
+
+  /* Sits above the card's click overlay so links stay clickable. */
+  position: relative;
+  z-index: 2;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  border-radius: inherit;
+  cursor: pointer;
+  color: transparent;
+  font-size: 0;
+}
+
+.arrow {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-accent);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.arrow:hover:not(:disabled) {
+  background: var(--color-chip);
+}
+
+.arrow:disabled {
+  color: var(--color-disabled);
+  border-color: var(--color-border);
+  background: var(--color-bg);
+  cursor: not-allowed;
+}
+
+.linkButton {
+  display: inline-block;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+}
+
+.linkButton:hover {
+  background: var(--color-accent-light);
+  color: var(--color-on-accent);
+}
+
+.dialog {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  max-width: min(42rem, 92vw);
+  width: 100%;
+  box-shadow: var(--color-shadow);
+}
+
+.dialog::backdrop {
+  background: var(--color-backdrop);
+}
+
+.dialogInner {
+  position: relative;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.close {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: var(--color-chip);
+}
+
+.detailTitle {
+  margin: 0;
+  font-size: var(--text-xl);
+  padding-right: var(--space-5);
+}

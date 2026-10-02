@@ -7,7 +7,7 @@ Defines how a personal portfolio website presents projects, skills, experience, 
 ## ADDED Requirements
 
 ### Requirement: Portfolio content sections
-The site SHALL render the following sections, each populated from project-owned content files rather than hardcoded page markup: an introduction/hero summary, a project showcase, a skills overview, a work-experience timeline, and a contact section.
+The site SHALL render the following sections, each populated from project-owned content files rather than hardcoded page markup: an introduction/hero summary, a curated project showcase, an interview preparation section, a skills overview, a work-experience timeline, a contact section, and a site footer. A single-tier sticky site header providing navigation to those sections SHALL be present.
 
 #### Scenario: Visitor loads the home page
 - **WHEN** a visitor requests the site root
@@ -16,6 +16,77 @@ The site SHALL render the following sections, each populated from project-owned 
 #### Scenario: Content file is edited
 - **WHEN** the owner changes a project's title, description, status, tags, or links in the content source and the site is rebuilt
 - **THEN** the rebuilt site renders the updated values without any change to page components
+
+### Requirement: Horizontally scrollable card rails
+The project showcase and the interview preparation section SHALL each present their cards as a horizontally scrollable rail with scroll snapping. The rail SHALL NOT display a visible native scrollbar, SHALL provide previous and next arrow controls, and SHALL remain operable by keyboard.
+
+#### Scenario: Visitor scrolls the project rail
+- **WHEN** the rail's content is wider than the viewport
+- **THEN** the rail scrolls horizontally with snap points per card, and the page itself does not scroll horizontally
+
+#### Scenario: Visitor activates a rail arrow
+- **WHEN** a visitor activates the next or previous arrow control on a rail
+- **THEN** the rail advances or retreats by one card
+
+#### Scenario: No scrollbar track is shown
+- **WHEN** a rail is rendered
+- **THEN** the native scrollbar is not visible, while horizontal scrolling behaviour and snap points are retained
+
+#### Scenario: Keyboard-only visitor uses the rail
+- **WHEN** a visitor tabs to the rail or its arrow controls
+- **THEN** each receives focus as a labelled control so a keyboard user can scroll the rail
+
+### Requirement: Curated project showcase
+The home page SHALL list only an explicitly curated selection of at least ten projects, identified by a `featured` marker in the content source. Projects without that marker SHALL remain reachable by their detail URL but SHALL NOT appear on the home page. Every project entry SHALL expose its repository as a button-styled link, and no "read online" style secondary link SHALL be shown.
+
+#### Scenario: Owner curates the selection
+- **WHEN** a project is marked as featured
+- **THEN** it appears on the home page in project order
+
+#### Scenario: A project is not curated
+- **WHEN** a project has no featured marker
+- **THEN** it is absent from the home page while its detail page remains reachable by URL
+
+#### Scenario: Minimum selection size
+- **WHEN** the home page renders the project showcase
+- **THEN** at least ten projects are listed
+
+#### Scenario: Repository is presented as a button
+- **WHEN** a project card renders its repository link
+- **THEN** the link is presented as a button and is activatable by keyboard and pointer
+
+### Requirement: Interview preparation section
+The site SHALL present an interview preparation section listing at least ten preparation entries, each naming its topic area, the topics it covers, and a repository link presented as a button.
+
+#### Scenario: Visitor opens the interview preparation section
+- **WHEN** a visitor reaches the section
+- **THEN** each entry shows its title, its covered topics, and its outbound material links
+
+#### Scenario: Minimum entry count
+- **WHEN** the section renders
+- **THEN** at least ten entries are listed
+
+### Requirement: No duplicated material between sections
+No single repository SHALL be presented in both the project showcase and the interview preparation section.
+
+#### Scenario: Owner configures both sections
+- **WHEN** the project showcase and the interview preparation section are both populated
+- **THEN** their repository links do not overlap
+
+#### Scenario: Overlap is introduced
+- **WHEN** the same repository is configured in both sections
+- **THEN** a check reports the duplication as an error
+
+### Requirement: Visual theme
+The site SHALL present a purple banking-inspired visual language: a purple navigation bar, white cards on a light lavender page background, pill-shaped chips and buttons, and soft curved background shapes. No third-party logo, wordmark, or trademark SHALL be reproduced; the owner's own name serves as the header brand mark.
+
+#### Scenario: Header renders in both colour schemes
+- **WHEN** the site is viewed in either the light or the dark colour scheme
+- **THEN** header bar text, navigation text, and links each meet a 4.5:1 contrast ratio against their own background
+
+#### Scenario: Curved background shapes render
+- **WHEN** the home page loads
+- **THEN** soft curved background shapes are present and hidden from assistive technology, because they are decorative
 
 ### Requirement: Project showcase with lifecycle status
 The site SHALL present each showcased project with a title, short description, technology tags, links (repository and/or live demo), and a status that distinguishes completed work from work currently in progress.
@@ -51,11 +122,56 @@ The site SHALL be usable at viewport widths from 320px upward without horizontal
 - **THEN** every interactive element receives focus in a logical order with a visible focus indicator
 
 ### Requirement: Contact reachability
-The site SHALL provide at least one direct contact method (email link and/or links to professional profiles) in the contact section.
+The site SHALL present the booking entry point as the single contact action in the contact section, and SHALL NOT display an email address or a list of social profile links there. The booking control SHALL sit on the same row as the Contact heading, right-aligned at desktop widths, and SHALL stack below the heading at narrow widths. The site SHALL NOT display an email address anywhere on any page.
 
-#### Scenario: Visitor activates the email link
-- **WHEN** a visitor activates the email contact link
-- **THEN** the user's default mail client opens with the recipient address pre-filled
+#### Scenario: Visitor reaches the contact section
+- **WHEN** a visitor reaches the contact section
+- **THEN** a booking control is offered and no social profile link list is rendered in that section
+
+#### Scenario: Desktop and narrow layouts
+- **WHEN** the contact section is viewed at desktop width and then at a narrow viewport
+- **THEN** the booking control is right-aligned beside the Contact heading at desktop width and stacked below it at narrow width
+
+#### Scenario: Visitor looks for an email address
+- **WHEN** any page of the site is inspected
+- **THEN** no email address and no `mailto:` link is present
+
+### Requirement: Clickable cards reveal details in a dialog
+Each project card and each interview preparation card SHALL be activatable as a whole, opening an in-page dialog that presents that entry's details without navigating away. Project detail pages SHALL remain reachable by their stable URL as well as through the dialog.
+
+#### Scenario: Visitor activates a project card
+- **WHEN** a visitor activates a project card
+- **THEN** a dialog opens in place, presenting the project's title, status, tags, summary, detail body, and repository button, without a page navigation
+
+#### Scenario: Visitor activates an interview preparation card
+- **WHEN** a visitor activates an interview preparation card
+- **THEN** a dialog opens in place presenting its title, covered topics, and repository button
+
+#### Scenario: Visitor closes a dialog
+- **WHEN** a visitor activates the dialog's close control or presses Escape
+- **THEN** the dialog closes and focus returns to the card that opened it
+
+#### Scenario: Detail page is still reachable
+- **WHEN** a project's detail URL is requested directly or shared
+- **THEN** the same content is served at that URL, independently of the dialog
+
+### Requirement: Site header
+The site SHALL render a single-tier header containing a brand mark and primary navigation to the home page, the project showcase, the interview preparation section, and the booking page. The header SHALL remain visible while the rest of the page scrolls.
+
+#### Scenario: Visitor scrolls the page
+- **WHEN** a visitor scrolls down the home page
+- **THEN** the header stays fixed at the top of the viewport and the remaining content scrolls beneath it
+
+#### Scenario: No utility bar is present
+- **WHEN** any page is inspected
+- **THEN** no secondary utility strip of contact details or taglines is rendered above the primary navigation
+
+### Requirement: Site footer
+The site SHALL render a footer containing a heart symbol, an Indian flag symbol, and an attribution to GitHub that links to the owner's GitHub profile.
+
+#### Scenario: Visitor scrolls to the footer
+- **WHEN** a visitor reaches the end of the page
+- **THEN** the footer shows a heart, an Indian flag, and a "Powered by GitHub" attribution linking to the owner's GitHub profile
 
 ### Requirement: Static hosting on GitHub Pages
 The site SHALL be produced as a fully static build containing no server-side runtime dependency, and SHALL be published to GitHub Pages automatically from the repository's default branch.

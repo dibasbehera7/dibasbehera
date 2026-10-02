@@ -1,0 +1,8 @@
+.skills h2 { margin-bottom: var(--space-4); }
+.grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; margin: 0; }
+@media (min-width: 48rem) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 72rem) { .grid { grid-template-columns: repeat(3, 1fr); } }
+.group dt { font-weight: 600; margin-bottom: var(--space-1); }
+.group dd { margin: 0; }
+.list { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-1); padding: 0; }
+.item { font-size: var(--text-sm); color: var(--color-muted); }
