@@ -1,7 +1,14 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+
+// These assert against the built output, so they only apply once a build exists.
+const OUT = join(process.cwd(), "out");
+const builtOutput = existsSync(join(OUT, "index.html"));
+const describeBuild = builtOutput ? describe : describe.skip;
 import { BUDGET_BYTES, homePageAssetBytes } from "./budget";
 
-describe("bundle budget", () => {
+describeBuild("bundle budget", () => {
   it("keeps the home page JavaScript and CSS within the 500 KB transfer budget", () => {
     const { transferBytes, fileCount } = homePageAssetBytes();
 

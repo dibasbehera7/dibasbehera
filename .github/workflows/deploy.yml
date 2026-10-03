@@ -37,6 +37,13 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # The build runs before the tests because part of the suite asserts against
+      # the exported output in out/.
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /dibasbehera
+
       - name: Unit and component tests
         run: npm test
 
@@ -45,11 +52,6 @@ jobs:
         env:
           # Opts the network-gated link check in; skipped in the run above.
           CHECK_EXTERNAL_LINKS: "1"
-
-      - name: Build
-        run: npm run build
-        env:
-          NEXT_PUBLIC_BASE_PATH: /dibasbehera
 
       - name: Bundle budget, internal links, and booking isolation
         run: npm run verify:site

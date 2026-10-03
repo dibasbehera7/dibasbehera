@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
@@ -9,10 +10,13 @@ import {
   internalRoutes,
 } from "./checks";
 
+// These assert against the built output, so they only apply once a build exists.
 const OUT = join(process.cwd(), "out");
+const builtOutput = existsSync(join(OUT, "index.html"));
+const describeBuild = builtOutput ? describe : describe.skip;
 const BASE = "/dibasbehera";
 
-describe("built output link checking", () => {
+describeBuild("built output link checking", () => {
   it("resolves every internal link in the built site", () => {
     const { problems } = checkInternalLinks(OUT, BASE);
 
@@ -55,7 +59,7 @@ describe("built output link checking", () => {
   });
 });
 
-describe("booking isolation", () => {
+describeBuild("booking isolation", () => {
   it("loads Cal.com only on the booking page", () => {
     expect(checkBookingIsolation(OUT)).toEqual([]);
   });
