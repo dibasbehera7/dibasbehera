@@ -184,6 +184,18 @@ async function main() {
 
       console.log(`\n${path} (median of ${RUNS})`);
 
+      // Guard against measuring an unstyled page: if the stylesheets did not
+      // load, every audit still runs but reports meaningless geometry.
+      const cssRequests = (lastLhr?.audits?.["network-requests"]?.details?.items ?? [])
+        .filter((item) => item.resourceType === "Stylesheet")
+        .map((item) => `${item.statusCode} ${item.url.split("/").pop()}`);
+
+      if (cssRequests.length === 0) {
+        console.log("  WARNING no stylesheet requests were recorded");
+      } else {
+        console.log(`  stylesheets: ${cssRequests.join(", ")}`);
+      }
+
       for (const [category, threshold] of Object.entries(THRESHOLDS)) {
         const score = median(samples[category]);
         const pass = score >= threshold;
