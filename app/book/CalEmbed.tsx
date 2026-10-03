@@ -12,8 +12,7 @@ const CAL_SCRIPT_SRC = "https://app.cal.com/embed/embed.js";
  *
  * The provider script is injected only after the visitor activates the control,
  * so no third-party request is made before that point and no provider cookie is
- * set on page view. The plain fallback link is rendered by the server component
- * and stays usable regardless of whether this embed ever loads.
+ * set on page view. Activating the control renders the calendar in place.
  */
 export function CalEmbed({ booking }: { booking: BookingConfig }) {
   const [status, setStatus] = useState<"idle" | "loading" | "ready" | "failed">(
@@ -72,8 +71,8 @@ export function CalEmbed({ booking }: { booking: BookingConfig }) {
 
       {status === "failed" && (
         <p className={styles.status} role="status">
-          The booking calendar could not be loaded. Use the direct booking link
-          below instead.
+          The booking calendar could not be loaded. Please try again, or open
+          Cal.com directly at cal.com/{booking.handle}.
         </p>
       )}
     </div>

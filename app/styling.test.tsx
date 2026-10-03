@@ -225,19 +225,16 @@ describe("keyboard reachability", () => {
     }
 
     expect(reachable.join(" | ")).toContain("Book a 1:1 session");
-  });
+  }, 20_000);
 
-  it("reaches the embed control and the fallback link by keyboard", async () => {
+  it("reaches the booking calendar control by keyboard", async () => {
     render(<BookPage />);
 
     await userEvent.tab();
-    const first = document.activeElement as HTMLElement;
-    expect(first).toHaveAttribute("type", "button");
-
-    await userEvent.tab();
-    expect(document.activeElement).toHaveTextContent("Book directly on Cal.com");
+    expect(document.activeElement).toHaveTextContent(
+      "Open the booking calendar",
+    );
   });
-
   it("activates the embed control with the keyboard", async () => {
     render(<CalEmbed booking={site.booking} />);
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRef, useState } from "react";
 import type { Project } from "@/content/types";
 import styles from "./ProjectShowcase.module.css";
@@ -184,12 +183,6 @@ export function ProjectShowcase({ projects }: { projects: Project[] }) {
                 </li>
               ))}
             </ul>
-            <p className={styles.detailLink}>
-              {/* `Link` applies the configured basePath; a raw href would not. */}
-              <Link href={`/projects/${active.slug}`}>
-                Open the full project page
-              </Link>
-            </p>
           </div>
         )}
       </dialog>

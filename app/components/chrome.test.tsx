@@ -274,14 +274,14 @@ describe("card dialogs", () => {
     );
   });
 
-  it("keeps the detail page reachable from the dialog", async () => {
+  it("offers no link to a full page inside the dialog", async () => {
     const dialog = await openFirstProject();
 
     expect(
-      within(dialog).getByRole("link", { name: /open the full project page/i }),
-    ).toHaveAttribute("href", `/projects/${featuredProjects[0].slug}`);
+      within(dialog).queryByRole("link", { name: /open the full project page/i }),
+    ).not.toBeInTheDocument();
+    expect(within(dialog).getByRole("link", { name: "Repository" })).toBeInTheDocument();
   });
-
   it("closes when the close control is activated", async () => {
     const dialog = await openFirstProject();
 

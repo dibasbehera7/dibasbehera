@@ -88,12 +88,25 @@ async function main() {
   );
   check("at least ten projects are listed", (home.html.match(/Show details for/g) ?? []).length >= 20);
   check(
-    "booking page shows a price before the handoff",
+    "booking page shows a price before the calendar is opened",
     /\$\d/.test(book.text),
   );
   check(
-    "booking page always links to the Cal.com account",
-    book.html.includes("https://cal.com/dibasbehera"),
+    "booking page opens the calendar in place",
+    book.html.includes("Open the booking calendar"),
+  );
+  check(
+    "booking page carries no direct-link fallback or body copy",
+    !book.html.includes("Book directly on Cal.com") &&
+      !/handled by Cal\.com/i.test(book.text),
+  );
+  check(
+    "cards offer no link to a full project page",
+    !home.html.includes("Open the full project page"),
+  );
+  check(
+    "contact section carries no body copy",
+    !/Want to walk through an architecture problem/.test(home.text),
   );
   check(
     "booking page carries a Content-Security-Policy",

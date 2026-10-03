@@ -1,4 +1,45 @@
-.intro { display: flex; flex-direction: column; gap: var(--space-2); }
-.role { font-size: var(--text-lg); color: var(--color-accent); font-weight: 600; }
-.tagline { font-size: var(--text-xl); font-weight: 500; }
-.body { color: var(--color-muted); max-width: 65ch; }
+/* A centred column rather than full-bleed text, so the introduction occupies the
+   middle of the page instead of stretching across it. */
+.intro {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-5) 0;
+}
+
+.inner {
+  /* Clamps so the column stays readable on wide screens and fills narrow ones. */
+  width: min(46rem, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-align: center;
+}
+
+@media (min-width: 48rem) {
+  .inner {
+    gap: var(--space-4);
+  }
+}
+
+.role {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.tagline {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.body {
+  margin: 0;
+  color: var(--color-muted);
+  /* Keeps the measure comfortable regardless of the column width. */
+  max-width: 40rem;
+  margin-inline: auto;
+  text-wrap: pretty;
+}

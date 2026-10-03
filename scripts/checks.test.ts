@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  checkBookingFallback,
+  checkBookingPage,
   checkBookingIsolation,
   checkInternalLinks,
   findCollisions,
@@ -64,8 +64,8 @@ describeBuild("booking isolation", () => {
     expect(checkBookingIsolation(OUT)).toEqual([]);
   });
 
-  it("keeps the direct Cal.com link on the booking page", () => {
-    expect(checkBookingFallback(OUT)).toEqual([]);
+  it("offers the calendar control and no direct-link fallback", () => {
+    expect(checkBookingPage(OUT)).toEqual([]);
   });
 });
 

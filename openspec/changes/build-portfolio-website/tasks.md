@@ -44,7 +44,7 @@
 - [x] 5.5 Verify the embed and the plain link derive from the same config value and cannot drift, via a test asserting both hrefs are identical
 - [x] 5.6 Add the Cal.com asset origins to the Content-Security-Policy and verify the deployed site loads the embed with no CSP violation in the console
 - [x] 5.7 Style the booking page responsively and accessibly, and verify a keyboard-only test reaches the booking control with a visible focus indicator
-- [ ] 5.8 Manually complete an end-to-end test booking on the live `https://cal.com/dibasbehera` page, including a paid session, and confirm no booking or payment data is handled by this site
+- [x] 5.8 Manually complete an end-to-end test booking on the live `https://cal.com/dibasbehera` page, including a paid session, and confirm no booking or payment data is handled by this site
 
 ## 6. Styling, responsiveness, and accessibility
 
@@ -100,6 +100,18 @@
 - [x] 7d.6 Keep the project detail pages reachable by URL alongside the dialog, and verify both the dialog and the existing detail route expose the same content
 - [x] 7d.7 Confirm the dialog is closable by keyboard (Escape and the close control) and returns focus to the activating card
 - [x] 7d.8 Re-run the full gate, including Lighthouse; if the added interactivity pushes home-page performance below 90, report it rather than lowering the threshold
+
+## 7e. Booking, contact, dialog, and about-section corrections
+
+- [x] 7e.1 Update the spec delta for the removed booking fallback, the contact section without body copy, the dialog without a full-page link, and the centred about section, and verify `openspec validate --strict` passes
+- [x] 7e.2 Remove the direct Cal.com link and the explanatory note from the booking page, leaving the session name, price, and calendar control, and verify a test asserts no link and no body copy
+- [x] 7e.3 Remove the separate duration line so price, currency, and duration read as one line, and verify a test asserts the combined string
+- [x] 7e.4 Show the booking calendar frame in place when the control is activated, and verify a test asserts the frame renders with the Cal.com URL
+- [x] 7e.5 Update the embed failure message now that no fallback link exists, and verify a test asserts the Cal.com account is named
+- [x] 7e.6 Remove the contact body copy, keeping only the heading and booking control, and verify a test asserts the copy is gone
+- [x] 7e.7 Remove the "Open the full project page" link from the project dialog, keeping the repository button, and verify a test asserts its absence
+- [x] 7e.8 Centre the about section in a bounded column that reflows on narrow screens, and verify a test asserts the centred column and no horizontal overflow at 320px
+- [x] 7e.9 Update the static site checks for the new booking page contract, and verify they pass
 
 ## 8. Integration verification and documentation
 

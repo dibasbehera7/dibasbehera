@@ -120,17 +120,29 @@ export function checkBookingIsolation(outDir = OUT_DIR) {
   return problems;
 }
 
-/** Confirms the booking page still exposes the direct Cal.com link. */
-export function checkBookingFallback(outDir = OUT_DIR) {
+/**
+ * Confirms the booking page still exposes the in-place calendar control, and
+ * carries no direct-link fallback.
+ */
+export function checkBookingPage(outDir = OUT_DIR) {
   const page = join(outDir, "book", "index.html");
 
   if (!existsSync(page)) {
     return [`Missing booking page at ${page}`];
   }
 
-  return readFileSync(page, "utf8").includes(BOOKING_HOST)
-    ? []
-    : [`Booking page does not link to ${BOOKING_HOST}`];
+  const html = readFileSync(page, "utf8");
+  const problems: string[] = [];
+
+  if (!html.includes("Open the booking calendar")) {
+    problems.push("Booking page does not offer the calendar control");
+  }
+
+  if (html.includes("Book directly on Cal.com")) {
+    problems.push("Booking page still offers a direct-link fallback");
+  }
+
+  return problems;
 }
 
 export { BOOKING_HOST };

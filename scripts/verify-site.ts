@@ -1,5 +1,5 @@
 import { homePageAssetBytes, homePageAssetFiles, BUDGET_BYTES } from "./budget";
-import { checkInternalLinks, checkBookingIsolation, checkBookingFallback } from "./checks";
+import { checkInternalLinks, checkBookingIsolation, checkBookingPage } from "./checks";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const format = (bytes: number) => `${(bytes / 1024).toFixed(1)} KB`;
@@ -26,7 +26,7 @@ if (links.problems.length > 0) fail("Broken internal links", links.problems);
 const isolated = checkBookingIsolation();
 if (isolated.length > 0) fail("Booking embed leaked outside /book", isolated);
 
-const fallback = checkBookingFallback();
-if (fallback.length > 0) fail("Booking fallback missing", fallback);
+const booking = checkBookingPage();
+if (booking.length > 0) fail("Booking page check failed", booking);
 
 console.log("\nAll static site checks passed.");

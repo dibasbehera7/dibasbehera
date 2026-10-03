@@ -78,7 +78,7 @@ describe("ProjectShowcase", () => {
     expect(screen.getAllByText("Completed").length).toBeGreaterThan(0);
   });
 
-  it("keeps the detail page reachable from the card dialog", async () => {
+  it("offers no full project page link in the dialog", async () => {
     render(<ProjectShowcase projects={[stubProject]} />);
 
     await userEvent.click(
@@ -86,10 +86,10 @@ describe("ProjectShowcase", () => {
     );
 
     expect(
-      screen.getByRole("link", { name: /open the full project page/i }),
-    ).toHaveAttribute("href", "/projects/stub");
+      screen.queryByRole("link", { name: /open the full project page/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Repository" }).length).toBeGreaterThan(0);
   });
-
   it("renders a control for each configured project", () => {
     render(<ProjectShowcase projects={projects} />);
 

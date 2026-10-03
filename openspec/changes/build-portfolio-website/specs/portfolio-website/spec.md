@@ -122,11 +122,11 @@ The site SHALL be usable at viewport widths from 320px upward without horizontal
 - **THEN** every interactive element receives focus in a logical order with a visible focus indicator
 
 ### Requirement: Contact reachability
-The site SHALL present the booking entry point as the single contact action in the contact section, and SHALL NOT display an email address or a list of social profile links there. The booking control SHALL sit on the same row as the Contact heading, right-aligned at desktop widths, and SHALL stack below the heading at narrow widths. The site SHALL NOT display an email address anywhere on any page.
+The site SHALL present the booking entry point as the only content of the contact section: a heading and the booking control, with no explanatory body copy, no email address, and no list of social profile links. The booking control SHALL sit on the same row as the Contact heading, right-aligned at desktop widths, and SHALL stack below the heading at narrow widths. The site SHALL NOT display an email address anywhere on any page.
 
 #### Scenario: Visitor reaches the contact section
 - **WHEN** a visitor reaches the contact section
-- **THEN** a booking control is offered and no social profile link list is rendered in that section
+- **THEN** the heading and booking control are shown, with no body copy, no social profile link list, and no email address
 
 #### Scenario: Desktop and narrow layouts
 - **WHEN** the contact section is viewed at desktop width and then at a narrow viewport
@@ -137,11 +137,15 @@ The site SHALL present the booking entry point as the single contact action in t
 - **THEN** no email address and no `mailto:` link is present
 
 ### Requirement: Clickable cards reveal details in a dialog
-Each project card and each interview preparation card SHALL be activatable as a whole, opening an in-page dialog that presents that entry's details without navigating away. Project detail pages SHALL remain reachable by their stable URL as well as through the dialog.
+Each project card and each interview preparation card SHALL be activatable as a whole, opening an in-page dialog that presents that entry's details without navigating away. The dialog SHALL offer the entry's outbound repository button and SHALL NOT offer a link to a separate full page. Project detail pages SHALL remain reachable by their stable URL.
 
 #### Scenario: Visitor activates a project card
 - **WHEN** a visitor activates a project card
 - **THEN** a dialog opens in place, presenting the project's title, status, tags, summary, detail body, and repository button, without a page navigation
+
+#### Scenario: Dialog contents are limited to the entry
+- **WHEN** a dialog is open
+- **THEN** no link to a full project page or any other secondary destination is offered inside it
 
 #### Scenario: Visitor activates an interview preparation card
 - **WHEN** a visitor activates an interview preparation card
@@ -154,6 +158,17 @@ Each project card and each interview preparation card SHALL be activatable as a 
 #### Scenario: Detail page is still reachable
 - **WHEN** a project's detail URL is requested directly or shared
 - **THEN** the same content is served at that URL, independently of the dialog
+
+### Requirement: About section layout
+The introduction section SHALL present its content as a centred column occupying the middle of the page rather than stretched across the full width, and SHALL reflow to the viewport width on narrow screens.
+
+#### Scenario: Desktop layout
+- **WHEN** the home page is viewed at desktop width
+- **THEN** the introduction content sits in a centred column with balanced margins and does not span the full page width
+
+#### Scenario: Narrow layout
+- **WHEN** the home page is viewed at a narrow viewport
+- **THEN** the introduction content fits the viewport with no horizontal scrolling
 
 ### Requirement: Site header
 The site SHALL render a single-tier header containing a brand mark and primary navigation to the home page, the project showcase, the interview preparation section, and the booking page. The header SHALL remain visible while the rest of the page scrolls.
@@ -244,30 +259,26 @@ The site SHALL load no advertising, tracking, or analytics scripts, and the only
 - **THEN** it is behind a consent gate that defaults to not loading, and the consent mechanism is documented
 
 ### Requirement: Session booking entry point
-The site SHALL present a session booking section that offers a visitor a clear, always-available path to book a 1:1 session with the site owner through the public Cal.com account `https://cal.com/dibasbehera`.
+The site SHALL present a session booking section that offers a visitor a single clear path to book a 1:1 session with the site owner through the public Cal.com account `https://cal.com/dibasbehera`. Activating the booking control SHALL render the Cal.com booking calendar in place on the page. The section SHALL consist only of the session name, the price, and that control: no separate duration line, no direct-link fallback, and no explanatory body copy.
 
 #### Scenario: Visitor opens the booking section
 - **WHEN** a visitor reaches the booking section
-- **THEN** the section names the 1:1 session, states the session duration, and provides a booking control that opens the owner's Cal.com booking page at `https://cal.com/dibasbehera`
+- **THEN** the session name, its price, and a booking control are shown, and nothing else
 
 #### Scenario: Visitor activates the booking control
 - **WHEN** a visitor activates the booking control
-- **THEN** the Cal.com booking flow for `https://cal.com/dibasbehera` opens and the visitor can select an available slot and complete the booking, including paying where the session is a paid session
-
-#### Scenario: Cal.com cannot be loaded
-- **WHEN** the booking surface fails to load, or the visitor has JavaScript disabled, or the Cal.com embed is blocked
-- **THEN** a visible plain link to `https://cal.com/dibasbehera` remains available so the visitor can still reach the booking page
+- **THEN** the Cal.com booking calendar for `https://cal.com/dibasbehera` renders in place on the page, and the visitor can select an available slot and complete the booking, including paying where the session is a paid session
 
 #### Scenario: Visitor leaves the site to book
 - **WHEN** booking occurs on Cal.com
-- **THEN** the site stores no booking details, payment data, or visitor identity, and imposes no cookie or analytics of its own on the visitor for the booking flow
+- **THEN** the site stores no booking details, payment data, or visitor identity, and imposes no cookie or analytics of its own for the booking flow other than the embedded calendar itself
 
 ### Requirement: Paid session pricing
-The site SHALL display the price and currency of a paid 1:1 session before the visitor is sent to booking, and SHALL NOT collect payment details itself.
+The site SHALL display the price and currency of a paid 1:1 session, together with its duration, before the visitor is sent to booking, and SHALL NOT collect payment details itself.
 
 #### Scenario: Visitor views pricing
 - **WHEN** the booking section is visible
-- **THEN** the session price and currency are shown as text before any handoff to Cal.com
+- **THEN** the session price, currency, and duration are shown as text before the calendar is activated
 
 #### Scenario: Visitor proceeds to pay
 - **WHEN** the visitor selects a paid session slot
