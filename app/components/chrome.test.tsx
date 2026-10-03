@@ -92,14 +92,42 @@ describe("no email anywhere on the page", () => {
 });
 
 describe("scroll rails", () => {
-  it("hides the scrollbar while keeping horizontal scrolling", () => {
-    const css = read("components/ScrollRail.module.css");
+  it("ships the shared rail styles as plain CSS, not as a module", () => {
+    const rail = read("components/rail.css");
 
-    expect(css).toContain("scrollbar-width: none");
-    expect(css).toContain("-ms-overflow-style: none");
-    expect(css).toContain(".rail::-webkit-scrollbar");
-    expect(css).toMatch(/overflow-x:\s*auto/);
-    expect(css).toContain("scroll-snap-type");
+    expect(rail).toContain(".card-rail-wrapper");
+    expect(rail).toMatch(/\.card-rail\s*\{/);
+    expect(rail).toMatch(/overflow-x:\s*auto/);
+    expect(rail).toContain("scroll-snap-type");
+    expect(rail).toContain("scrollbar-width: none");
+    expect(rail).toContain("-ms-overflow-style: none");
+    expect(rail).toContain(".card-rail::-webkit-scrollbar");
+
+    // Imported by globals so the plain class names reach every component.
+    expect(read("globals.css")).toContain("@import './components/rail.css'");
+
+    // No component may import a CSS module from another module: scoped class
+    // names are not re-exported, which silently drops the classes.
+    for (const sheet of [
+      "components/ProjectShowcase.module.css",
+      "components/InterviewPreps.module.css",
+    ]) {
+      expect(read(sheet)).not.toContain("@import");
+    }
+  });
+
+  it("applies the rail classes to the rendered elements", () => {
+    render(<HomePage />);
+
+    for (const label of [
+      /featured projects, scroll horizontally/i,
+      /interview preparation topics, scroll horizontally/i,
+    ]) {
+      const rail = screen.getByRole("list", { name: label });
+      expect(rail).toHaveClass("card-rail");
+      expect(rail).toHaveAttribute("tabindex", "0");
+      expect(rail.parentElement).toHaveClass("card-rail-wrapper");
+    }
   });
 
   it("gives each rail's cards a fixed basis so they snap predictably", () => {
@@ -109,41 +137,21 @@ describe("scroll rails", () => {
     ]) {
       expect(read(sheet)).toMatch(/flex:\s*0 0/);
       expect(read(sheet)).toContain("scroll-snap-align");
+      expect(read(sheet)).toContain("position: relative");
     }
   });
 
   it("exposes labelled previous and next arrows on both rails", () => {
     render(<HomePage />);
 
-    expect(
-      screen.getByRole("button", { name: /scroll featured projects backwards/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /scroll featured projects forwards/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", {
-        name: /scroll interview preparation topics backwards/i,
-      }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", {
-        name: /scroll interview preparation topics forwards/i,
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it("keeps each rail focusable and labelled for keyboard scrolling", () => {
-    render(<HomePage />);
-
-    expect(
-      screen.getByRole("list", { name: /featured projects, scroll horizontally/i }),
-    ).toHaveAttribute("tabindex", "0");
-    expect(
-      screen.getByRole("list", {
-        name: /interview preparation topics, scroll horizontally/i,
-      }),
-    ).toHaveAttribute("tabindex", "0");
+    for (const name of [
+      /scroll featured projects backwards/i,
+      /scroll featured projects forwards/i,
+      /scroll interview preparation topics backwards/i,
+      /scroll interview preparation topics forwards/i,
+    ]) {
+      expect(screen.getByRole("button", { name })).toBeInTheDocument();
+    }
   });
 
   it("disables the backward arrow while a rail is at its start", () => {
@@ -185,7 +193,6 @@ describe("scroll rails", () => {
     expect(scrollBy.mock.calls[0][0]).toMatchObject({ behavior: "smooth" });
   });
 });
-
 describe("repository links are buttons", () => {
   it("renders the repository link as a button-styled anchor", () => {
     render(<HomePage />);

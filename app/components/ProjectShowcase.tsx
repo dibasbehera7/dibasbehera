@@ -56,7 +56,7 @@ export function ProjectShowcase({ projects }: { projects: Project[] }) {
       aria-labelledby="projects-heading"
     >
       <h2 id="projects-heading">Projects</h2>
-      <div className={styles.wrapper}>
+      <div className="card-rail-wrapper">
         <button
           type="button"
           className={styles.arrow}
@@ -70,7 +70,7 @@ export function ProjectShowcase({ projects }: { projects: Project[] }) {
         <ul
           id="projects-rail"
           ref={railRef}
-          className={styles.rail}
+          className="card-rail"
           tabIndex={0}
           aria-label="featured projects, scroll horizontally for more"
           onScroll={syncEdges}

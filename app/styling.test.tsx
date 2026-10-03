@@ -115,18 +115,15 @@ describe("design tokens", () => {
 });
 
 describe("scrollable card rails", () => {
-  const railSheet = "components/ScrollRail.module.css";
-
   it("hides the scrollbar while keeping horizontal scrolling and snap points", () => {
-    const css = readCss(railSheet);
+    const css = readCss("components/rail.css");
 
     expect(css).toContain("scrollbar-width: none");
     expect(css).toContain("-ms-overflow-style: none");
-    expect(css).toContain(".rail::-webkit-scrollbar");
+    expect(css).toContain(".card-rail::-webkit-scrollbar");
     expect(css).toMatch(/overflow-x:\s*auto/);
     expect(css).toContain("scroll-snap-type");
   });
-
   it("gives each rail's cards a fixed basis so they snap predictably", () => {
     for (const sheet of [
       "components/ProjectShowcase.module.css",

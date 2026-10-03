@@ -44,7 +44,7 @@ export function InterviewPreps({ items }: { items: PrepItem[] }) {
   return (
     <section className={styles.preps} id="preps" aria-labelledby="preps-heading">
       <h2 id="preps-heading">Interview Preps</h2>
-      <div className={styles.wrapper}>
+      <div className="card-rail-wrapper">
         <button
           type="button"
           className={styles.arrow}
@@ -58,7 +58,7 @@ export function InterviewPreps({ items }: { items: PrepItem[] }) {
         <ul
           id="preps-rail"
           ref={railRef}
-          className={styles.rail}
+          className="card-rail"
           tabIndex={0}
           aria-label="interview preparation topics, scroll horizontally for more"
           onScroll={syncEdges}

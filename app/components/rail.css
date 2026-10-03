@@ -1,11 +1,19 @@
-/* Shared rail styles for any horizontally scrollable card rail. */
-.wrapper {
+/*
+ * Shared styles for horizontally scrollable card rails.
+ *
+ * This is deliberately a plain (non-module) stylesheet: these classes are shared
+ * by more than one component, and CSS Modules scope class names per file, so
+ * importing a module from another module does not expose its class names to the
+ * importing component.
+ */
+
+.card-rail-wrapper {
   display: flex;
   align-items: center;
   gap: var(--space-2);
 }
 
-.rail {
+.card-rail {
   display: flex;
   gap: var(--space-4);
   list-style: none;
@@ -22,6 +30,6 @@
   -ms-overflow-style: none;
 }
 
-.rail::-webkit-scrollbar {
+.card-rail::-webkit-scrollbar {
   display: none;
 }
