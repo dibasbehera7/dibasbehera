@@ -214,6 +214,10 @@ async function main() {
   console.log("\nLighthouse thresholds met.");
 }
 
-if (import.meta.url.endsWith("lighthouse-gate.mjs")) {
+// Only run when executed directly; importing this module (for tests) must
+// not start a Chrome instance and audit the site.
+const invokedDirectly = process.argv[1]?.endsWith("lighthouse-gate.mjs");
+
+if (invokedDirectly) {
   void main();
 }

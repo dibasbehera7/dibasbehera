@@ -42,9 +42,8 @@
 .navList {
   display: flex;
   flex-wrap: wrap;
-  /* 1.5rem = 24px: adjacent navigation targets need at least this much space
-     between them to satisfy the WCAG 2.2 target-size guidance. */
-  gap: var(--space-4);
+  /* Adjacent navigation targets need clear space between them; see --target-gap. */
+  gap: var(--target-gap);
   list-style: none;
   margin: 0;
   padding: 0;

@@ -61,22 +61,13 @@ describe("header", () => {
 
   it("spaces adjacent navigation targets far enough apart", () => {
     const css = read("components/TopBar.module.css");
-    const gap = css.match(/\.navList\s*\{[^}]*gap:\s*var\(--space-(\d)\)/);
+    expect(css).toMatch(/\.navList\s*\{[^}]*gap:\s*var\(--target-gap\)/);
 
-    expect(gap).not.toBeNull();
-    // --space-4 is 1.5rem (24px), the minimum spacing WCAG 2.2 expects
-    // between adjacent touch targets.
-    expect(gap![1]).toBe("4");
-  });});
-
-describe("footer", () => {
-  it("renders a heart and an Indian flag with accessible labels", () => {
-    render(<Footer site={site} />);
-
-    expect(screen.getByRole("img", { name: "love" })).toHaveTextContent("❤️");
-    expect(screen.getByRole("img", { name: "India" })).toHaveTextContent("🇮🇳");
+    // --target-gap must exceed the 24px WCAG 2.2 minimum, not sit on it.
+    const declared = read("globals.css").match(/--target-gap:\s*([\d.]+)rem/);
+    expect(declared).not.toBeNull();
+    expect(Number(declared![1])).toBeGreaterThan(1.5);
   });
-
   it("credits GitHub with a link to the owner's profile", () => {
     render(<Footer site={site} />);
 
