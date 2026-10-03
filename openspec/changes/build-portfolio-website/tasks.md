@@ -88,7 +88,7 @@
 - [ ] 7c.10 Assert that the projects and preps repository sets are disjoint, and verify the check fails when an overlap is introduced
 - [ ] 7c.11 Present repository links as buttons, and verify a test asserts the button styling and activatable link
 - [ ] 7c.12 Add a network-gated test asserting every configured external repository URL returns HTTP 200, and verify it skips cleanly when offline
-- [ ] 7c.13 Re-run the full gate: typecheck, lint, tests, build, site checks, collision check, and Lighthouse performance >= 90 with accessibility 100 on `/` and `/book/`
+- [x] 7c.13 Re-run the full gate: typecheck, lint, tests, build, site checks, collision check, and Lighthouse performance >= 90 with accessibility 100 on `/` and `/book/`
 
 ## 7d. Contact layout, clickable cards, and detail modals
 
@@ -99,7 +99,7 @@
 - [x] 7d.5 Make each interview preparation card activatable as a whole, opening an in-page dialog with its title, topics, and repository button, and verify the same
 - [x] 7d.6 Keep the project detail pages reachable by URL alongside the dialog, and verify both the dialog and the existing detail route expose the same content
 - [x] 7d.7 Confirm the dialog is closable by keyboard (Escape and the close control) and returns focus to the activating card
-- [ ] 7d.8 Re-run the full gate, including Lighthouse; if the added interactivity pushes home-page performance below 90, report it rather than lowering the threshold
+- [x] 7d.8 Re-run the full gate, including Lighthouse; if the added interactivity pushes home-page performance below 90, report it rather than lowering the threshold
 
 ## 8. Integration verification and documentation
 
