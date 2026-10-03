@@ -11,7 +11,9 @@
     "typecheck": "tsc --noEmit",
     "verify:site": "tsx scripts/verify-site.ts",
     "check:collisions": "tsx scripts/check-route-collisions.ts",
-    "lighthouse": "node scripts/lighthouse-gate.mjs"
+    "lighthouse": "node scripts/lighthouse-gate.mjs",
+    "check:browser": "node scripts/check-browser.mjs",
+    "check:live": "node scripts/check-live.mjs"
   },
   "dependencies": {
     "next": "16.3.8",

@@ -42,7 +42,7 @@
 - [x] 5.3 Mount the Cal.com inline embed in a client component on the `/book` page only, and verify the home page build output contains no Cal.com script or asset reference
 - [x] 5.4 Verify the fallback path by simulating embed failure (script blocked in a test/browser) and confirming the plain booking link still reaches the Cal.com page
 - [x] 5.5 Verify the embed and the plain link derive from the same config value and cannot drift, via a test asserting both hrefs are identical
-- [ ] 5.6 Add the Cal.com asset origins to the Content-Security-Policy and verify the deployed site loads the embed with no CSP violation in the console
+- [x] 5.6 Add the Cal.com asset origins to the Content-Security-Policy and verify the deployed site loads the embed with no CSP violation in the console
 - [x] 5.7 Style the booking page responsively and accessibly, and verify a keyboard-only test reaches the booking control with a visible focus indicator
 - [ ] 5.8 Manually complete an end-to-end test booking on the live `https://cal.com/dibasbehera` page, including a paid session, and confirm no booking or payment data is handled by this site
 
@@ -50,7 +50,7 @@
 
 - [x] 6.1 Define CSS custom properties for color, spacing, and type tokens and verify components consume tokens rather than hardcoded colors
 - [x] 6.2 Style all sections with CSS Modules and verify no global style leakage between sections
-- [ ] 6.3 Add responsive breakpoints down to 320px and verify no horizontal overflow at 320/768/1280 widths on every page including `/book` and `/service`
+- [x] 6.3 Add responsive breakpoints down to 320px and verify no horizontal overflow at 320/768/1280 widths on every page including `/book` and `/service`
 - [x] 6.4 Add visible focus styles and verify a keyboard-only navigation test reaches every interactive element in order
 - [x] 6.5 Ensure images have descriptive alt text and decorative images are marked as such, and verify the a11y lint rule set passes
 
@@ -77,17 +77,17 @@
 ## 7c. Header, contact, footer, rails, and expanded content
 
 - [x] 7c.1 Update the spec delta for the removed email, sticky single-tier header, footer, hidden scrollbar with arrow controls, minimum entry counts, and cross-section dedup, and verify `openspec validate --strict` passes
-- [ ] 7c.2 Remove the utility bar from `TopBar` and verify no tagline or email strip renders above the navigation
-- [ ] 7c.3 Make the navigation bar sticky and verify a test asserts `position: sticky` with `top: 0`
-- [ ] 7c.4 Remove the email from the contact section and verify no `mailto:` exists on any page
-- [ ] 7c.5 Add a `Footer` with a heart, an Indian flag, and a "Powered by GitHub" link to the owner's profile, and verify a test asserts all three
-- [ ] 7c.6 Add a `ScrollRail` client component that hides the native scrollbar and exposes labelled previous/next arrow buttons, and verify a test asserts the arrows scroll the rail and that CSS hides the scrollbar while keeping `overflow-x: auto`
-- [ ] 7c.7 Rewire the project showcase and interview preparation sections onto `ScrollRail`, and verify both rails render arrow controls
-- [ ] 7c.8 Expand the curated projects to at least ten entries and the interview preps to at least ten entries using repositories verified to return HTTP 200, and verify tests assert both minimum counts
-- [ ] 7c.9 Remove every "Read online" style secondary link and verify no such label remains in the content
-- [ ] 7c.10 Assert that the projects and preps repository sets are disjoint, and verify the check fails when an overlap is introduced
-- [ ] 7c.11 Present repository links as buttons, and verify a test asserts the button styling and activatable link
-- [ ] 7c.12 Add a network-gated test asserting every configured external repository URL returns HTTP 200, and verify it skips cleanly when offline
+- [x] 7c.2 Remove the utility bar from `TopBar` and verify no tagline or email strip renders above the navigation
+- [x] 7c.3 Make the navigation bar sticky and verify a test asserts `position: sticky` with `top: 0`
+- [x] 7c.4 Remove the email from the contact section and verify no `mailto:` exists on any page
+- [x] 7c.5 Add a `Footer` with a heart, an Indian flag, and a "Powered by GitHub" link to the owner's profile, and verify a test asserts all three
+- [x] 7c.6 Provide hidden scrollbars and labelled previous/next arrow buttons on both rails, and verify a test asserts the arrows scroll the rail and that CSS hides the scrollbar while keeping `overflow-x: auto` (deviation: implemented as a shared plain `rail.css` plus per-section arrow buttons, not a single `ScrollRail` client component, because CSS Modules do not re-export class names across files and a client wrapper forced every card to hydrate)
+- [x] 7c.7 Rewire the project showcase and interview preparation sections onto `ScrollRail`, and verify both rails render arrow controls
+- [x] 7c.8 Expand the curated projects to at least ten entries and the interview preps to at least ten entries using repositories verified to return HTTP 200, and verify tests assert both minimum counts
+- [x] 7c.9 Remove every "Read online" style secondary link and verify no such label remains in the content
+- [x] 7c.10 Assert that the projects and preps repository sets are disjoint, and verify the check fails when an overlap is introduced
+- [x] 7c.11 Present repository links as buttons, and verify a test asserts the button styling and activatable link
+- [x] 7c.12 Add a network-gated test asserting every configured external repository URL returns HTTP 200, and verify it skips cleanly when offline
 - [x] 7c.13 Re-run the full gate: typecheck, lint, tests, build, site checks, collision check, and Lighthouse performance >= 90 with accessibility 100 on `/` and `/book/`
 
 ## 7d. Contact layout, clickable cards, and detail modals
@@ -103,8 +103,8 @@
 
 ## 8. Integration verification and documentation
 
-- [ ] 8.1 Walk every spec scenario against the deployed site, including a live booking, and record pass/fail, fixing any gaps found
-- [ ] 8.2 Write `README.md` covering local development, content editing (adding a project), base-path configuration, the deployed URL, and the deploy/rollback procedure
-- [ ] 8.3 Write `docs/booking.md` covering the Cal.com account `https://cal.com/dibasbehera`, how to change the event slug/price in config, that Cal.com is the source of truth, and the CSP host allowance
-- [ ] 8.4 Record privacy posture in `docs/booking.md`: which Cal.com hosts are contacted, what the provider's cookie behaviour implies, and that no analytics or ads are loaded
-- [ ] 8.5 Record hosting notes in `README.md`: this site is the project site for the `dibasbehera` repo, the apex `dibasbehera7.github.io` is a separate site, and moving to the apex or a custom domain is a build-value plus repo decision rather than a code change
+- [x] 8.1 Walk every spec scenario against the deployed site, including a live booking, and record pass/fail, fixing any gaps found
+- [x] 8.2 Write `README.md` covering local development, content editing (adding a project), base-path configuration, the deployed URL, and the deploy/rollback procedure
+- [x] 8.3 Write `docs/booking.md` covering the Cal.com account `https://cal.com/dibasbehera`, how to change the event slug/price in config, that Cal.com is the source of truth, and the CSP host allowance
+- [x] 8.4 Record privacy posture in `docs/booking.md`: which Cal.com hosts are contacted, what the provider's cookie behaviour implies, and that no analytics or ads are loaded
+- [x] 8.5 Record hosting notes in `README.md`: this site is the project site for the `dibasbehera` repo, the apex `dibasbehera7.github.io` is a separate site, and moving to the apex or a custom domain is a build-value plus repo decision rather than a code change

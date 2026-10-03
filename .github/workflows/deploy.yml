@@ -61,6 +61,11 @@ jobs:
       - name: Route names do not collide with published project sites
         run: npm run check:collisions
 
+      - name: Reflow and CSP browser checks
+        run: npm run check:browser
+        env:
+          NEXT_PUBLIC_BASE_PATH: /dibasbehera
+
       - name: Lighthouse accessibility and performance thresholds
         run: npm run lighthouse
         env:
@@ -90,3 +95,13 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  verify-live:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      # Confirms the published site behaves as specified, not just the build.
+      - name: Live site checks
+        run: npm run check:live
+        env:
+          SITE_URL: https://dibasbehera7.github.io/dibasbehera

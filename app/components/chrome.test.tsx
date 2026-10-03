@@ -57,7 +57,7 @@ describe("header", () => {
     expect(css).toMatch(/position:\s*sticky/);
     expect(css).toMatch(/top:\s*0/);
     expect(css).toContain("z-index");
-  });
+});
 
   it("sizes navigation targets so they clear 24px without relying on tokens", () => {
     const css = read("components/TopBar.module.css");
@@ -69,7 +69,16 @@ describe("header", () => {
     expect(rule).toMatch(/padding:\s*[\d.]+rem/);
     expect(rule).not.toMatch(/padding:[^;]*var\(/);
     expect(rule).not.toMatch(/min-height:[^;]*var\(/);
-  });  it("credits GitHub with a link to the owner's profile", () => {
+  });
+
+  it("shows a heart and an Indian flag with accessible names", () => {
+    render(<Footer site={site} />);
+
+    expect(screen.getByRole("img", { name: "love" })).toHaveTextContent("❤️");
+    expect(screen.getByRole("img", { name: "India" })).toHaveTextContent("🇮🇳");
+  });
+
+  it("credits GitHub with a link to the owner's profile", () => {
     render(<Footer site={site} />);
 
     const link = screen.getByRole("link", { name: /@github/i });
