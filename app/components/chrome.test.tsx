@@ -58,7 +58,16 @@ describe("header", () => {
     expect(css).toMatch(/top:\s*0/);
     expect(css).toContain("z-index");
   });
-});
+
+  it("spaces adjacent navigation targets far enough apart", () => {
+    const css = read("components/TopBar.module.css");
+    const gap = css.match(/\.navList\s*\{[^}]*gap:\s*var\(--space-(\d)\)/);
+
+    expect(gap).not.toBeNull();
+    // --space-4 is 1.5rem (24px), the minimum spacing WCAG 2.2 expects
+    // between adjacent touch targets.
+    expect(gap![1]).toBe("4");
+  });});
 
 describe("footer", () => {
   it("renders a heart and an Indian flag with accessible labels", () => {
