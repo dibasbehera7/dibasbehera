@@ -147,7 +147,10 @@ export function failingAudits(lhr, categoryId) {
       `${ref.id} (${audit.scoreDisplayMode}, score ${audit.score}): ${audit.title}`,
     );
 
-    const snippets = (audit.details?.items ?? [])
+    // Not every audit reports `details.items` as an array: some group their
+    // findings under a single object, so guard before mapping.
+    const items = Array.isArray(audit.details?.items) ? audit.details.items : [];
+    const snippets = items
       .flatMap((item) => {
         const rect = item?.node?.boundingRect;
         const size = rect ? `${Math.round(rect.width)}x${Math.round(rect.height)}` : "no-rect";
