@@ -137,8 +137,15 @@ export function failingAudits(lhr, categoryId) {
     );
 
     const snippets = (audit.details?.items ?? [])
-      .flatMap((item) => [item?.node, item?.relatedNode])
-      .map((node) => node?.snippet)
+      .flatMap((item) => {
+        const rect = item?.node?.boundingRect;
+        const size = rect ? `${Math.round(rect.width)}x${Math.round(rect.height)}` : "no-rect";
+        const own = `${item?.node?.snippet} [${size}]`;
+        const other = item?.relatedNode?.snippet
+          ? `${item.relatedNode.snippet} (overlapping)`
+          : undefined;
+        return [own, other];
+      })
       .filter((snippet) => typeof snippet === "string")
       .slice(0, 6);
 
