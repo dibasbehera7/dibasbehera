@@ -101,6 +101,7 @@ export async function audit(origin, urlPath, port, overrides = {}) {
     accessibility: lhr.categories.accessibility.score ?? 0,
     "best-practices": lhr.categories["best-practices"].score ?? 0,
     seo: lhr.categories.seo.score ?? 0,
+    lhr,
   };
 }
 
@@ -115,6 +116,27 @@ function median(values) {
   return sorted.length % 2 === 0
     ? (sorted[middle - 1] + sorted[middle]) / 2
     : sorted[middle];
+}
+
+/**
+ * Lists the audits that dragged a category below its threshold, so a failure
+ * names the offending rule instead of only a score.
+ */
+function failingAudits(lhr, categoryId) {
+  const category = lhr.categories[categoryId];
+  if (!category) return [];
+
+  return category.auditRefs
+    .map((ref) => lhr.audits[ref.id])
+    .filter(
+      (audit) =>
+        audit &&
+        audit.score !== null &&
+        audit.score < 1 &&
+        // Only weight-bearing, manually checkable audits are worth naming.
+        typeof audit.scoreDisplayMode === "binary" || audit.scoreDisplayMode === "numeric",
+    )
+    .map((audit) => `${audit.id}: ${audit.title}`);
 }
 
 const RUNS = Number(process.env.LH_RUNS ?? 3);
@@ -133,9 +155,11 @@ async function main() {
         "best-practices": [],
         seo: [],
       };
+      let lastLhr = null;
 
       for (let run = 0; run < RUNS; run += 1) {
         const result = await audit(origin, path, chrome.port);
+        lastLhr = result.lhr;
         for (const category of Object.keys(samples)) {
           samples[category].push(result[category]);
         }
@@ -158,6 +182,10 @@ async function main() {
           failures.push(
             `${path} ${category} ${(score * 100).toFixed(0)} < ${(threshold * 100).toFixed(0)}`,
           );
+
+          for (const audit of failingAudits(lastLhr, category)) {
+            console.log(`        - ${audit}`);
+          }
         }
       }
     }
