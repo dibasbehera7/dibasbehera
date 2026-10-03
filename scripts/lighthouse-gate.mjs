@@ -129,20 +129,11 @@ function failingAudits(lhr, categoryId) {
   return category.auditRefs
     .map((ref) => lhr.audits[ref.id])
     .filter((audit) => audit && audit.score !== null && audit.score < 1)
-    const details = audit.details?.items ?? [];
-  const nodes = details
-    .flatMap((item) => [item, ...(item.subItems?.items ?? [])])
-    .map((entry) => entry.node?.snippet ?? entry.relatedNode?.snippet)
-    .filter(Boolean)
-    .slice(0, 5);
-
-  const headline = `${audit.id} (${audit.scoreDisplayMode}, score ${audit.score}): ${audit.title}`;
-
-  return nodes.length > 0
-    ? [headline, ...nodes.map((snippet) => `          ${snippet}`)]
-    : [headline];
+    .map(
+      (audit) =>
+        `${audit.id} (${audit.scoreDisplayMode}, score ${audit.score}): ${audit.title}`,
+    );
 }
-
 const RUNS = Number(process.env.LH_RUNS ?? 3);
 
 async function main() {

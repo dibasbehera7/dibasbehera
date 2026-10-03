@@ -206,13 +206,19 @@ describe("repository links are buttons", () => {
     expect(showcaseCss).toMatch(/display:\s*inline-block/);
   });
 
-  it("keeps the repository link above the card click overlay", () => {
+  it("does not stack a second interactive element over the card", () => {
     const showcaseCss = read("components/ProjectShowcase.module.css");
+    const prepsCss = read("components/InterviewPreps.module.css");
 
-    expect(showcaseCss).toMatch(/\.links\s*\{[^}]*z-index:\s*2/);
-    expect(showcaseCss).toMatch(/\.overlay\s*\{[^}]*z-index:\s*1/);
-  });
-});
+    for (const css of [showcaseCss, prepsCss]) {
+      // One control per card: the title button, stretched with a pseudo element.
+      expect(css).toContain(".cardButton::after");
+      expect(css).not.toContain(".overlay");
+      // The link stays above the stretched title button so it remains clickable.
+      expect(css).toMatch(/\.links\s*\{[^}]*z-index:\s*2/);
+      expect(css).toMatch(/\.cardButton::after\s*\{[^}]*z-index:\s*1/);
+    }
+  });});
 
 describe("card dialogs", () => {
   const openFirstProject = async () => {

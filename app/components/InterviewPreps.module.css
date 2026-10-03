@@ -52,18 +52,32 @@
   z-index: 2;
 }
 
-.overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: transparent;
+/* The card title is the control that opens the dialog; its stretched ::after
+   covers the card so nothing overlaps the link below it. */
+.cardButton {
+  position: static;
+  display: inline;
+  background: none;
   border: 0;
   padding: 0;
   margin: 0;
-  border-radius: inherit;
+  font: inherit;
+  color: inherit;
+  text-align: left;
   cursor: pointer;
-  color: transparent;
-  font-size: 0;
+}
+
+.cardButton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.cardButton:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
 }
 
 .arrow {

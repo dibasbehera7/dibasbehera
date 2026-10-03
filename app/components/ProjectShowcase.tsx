@@ -78,7 +78,19 @@ export function ProjectShowcase({ projects }: { projects: Project[] }) {
           {projects.map((project) => (
             <li key={project.slug} className={styles.card}>
               <div className={styles.cardHeader}>
-                <h3 className={styles.cardTitle}>{project.title}</h3>
+                <h3 className={styles.cardTitle}>
+                  {/* The stretched ::after makes the whole card clickable without
+                      adding a second interactive element on top of the
+                      repository link, which would overlap it. */}
+                  <button
+                    type="button"
+                    className={styles.cardButton}
+                    aria-label={`Show details for ${project.title}`}
+                    onClick={() => open(project)}
+                  >
+                    {project.title}
+                  </button>
+                </h3>
                 <p className={styles.status} data-status={project.status}>
                   {STATUS_LABEL[project.status]}
                 </p>
@@ -110,12 +122,6 @@ export function ProjectShowcase({ projects }: { projects: Project[] }) {
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                className={styles.overlay}
-                aria-label={`Show details for ${project.title}`}
-                onClick={() => open(project)}
-              />
             </li>
           ))}
         </ul>

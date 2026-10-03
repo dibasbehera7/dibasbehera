@@ -77,19 +77,33 @@
   z-index: 2;
 }
 
-/* Transparent control stretched over the card, making the whole card clickable. */
-.overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: transparent;
+/* The card title is the control that opens the dialog. Its stretched ::after
+   covers the card, so there is only one interactive element per card and it does
+   not overlap the repository link. */
+.cardButton {
+  position: static;
+  display: inline;
+  background: none;
   border: 0;
   padding: 0;
   margin: 0;
-  border-radius: inherit;
+  font: inherit;
+  color: inherit;
+  text-align: left;
   cursor: pointer;
-  color: transparent;
-  font-size: 0;
+}
+
+.cardButton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.cardButton:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
 }
 
 .arrow {

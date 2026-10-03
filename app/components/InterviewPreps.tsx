@@ -65,7 +65,18 @@ export function InterviewPreps({ items }: { items: PrepItem[] }) {
         >
           {items.map((item) => (
             <li key={item.title} className={styles.card}>
-              <h3 className={styles.title}>{item.title}</h3>
+              <h3 className={styles.title}>
+                {/* Stretched ::after makes the whole card clickable without a
+                    second interactive element overlapping the link. */}
+                <button
+                  type="button"
+                  className={styles.cardButton}
+                  aria-label={`Show details for ${item.title}`}
+                  onClick={() => open(item)}
+                >
+                  {item.title}
+                </button>
+              </h3>
               <ul className={styles.topics} aria-label={`${item.title} topics`}>
                 {item.topics.map((topic) => (
                   <li key={topic} className={styles.topic}>
@@ -87,12 +98,6 @@ export function InterviewPreps({ items }: { items: PrepItem[] }) {
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                className={styles.overlay}
-                aria-label={`Show details for ${item.title}`}
-                onClick={() => open(item)}
-              />
             </li>
           ))}
         </ul>
