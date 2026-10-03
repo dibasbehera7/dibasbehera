@@ -33,15 +33,16 @@ const MIME = {
  */
 export function serveStatic(outDir = OUT_DIR, basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "") {
   const prefix = basePath === "" ? "" : basePath.replace(/\/$/, "");
+  const notFound = [];
 
   return new Promise((resolve) => {
     const server = createServer((request, response) => {
       const url = new URL(request.url ?? "/", "http://localhost");
       const decoded = decodeURIComponent(url.pathname);
+
       // Comparison uses forward slashes; `normalize` would emit backslashes on
       // Windows and break the prefix check.
       const normalized = decoded.replace(/\\/g, "/");
-      const safeTarget = normalized.replace(/^(\.\.\/)+/, "");
 
       // A project site is only served under its prefix.
       if (prefix && !normalized.startsWith(`${prefix}/`) && normalized !== prefix) {
@@ -50,12 +51,16 @@ export function serveStatic(outDir = OUT_DIR, basePath = process.env.NEXT_PUBLIC
         return;
       }
 
-      const target = prefix ? normalized.slice(prefix.length) || "/" : safeTarget;
+      // Leading slashes are stripped so the path is always resolved relative to
+      // the output directory, on every platform.
+      const relative = (prefix ? normalized.slice(prefix.length) : normalized).replace(
+        /^\/+/,
+        "");
 
       for (const candidate of [
-        join(outDir, target),
-        join(outDir, target, "index.html"),
-        join(outDir, `${target}.html`),
+        join(outDir, relative),
+        join(outDir, relative, "index.html"),
+        join(outDir, `${relative}.html`),
       ]) {
         if (existsSync(candidate) && statSync(candidate).isFile()) {
           response.writeHead(200, {
@@ -64,6 +69,11 @@ export function serveStatic(outDir = OUT_DIR, basePath = process.env.NEXT_PUBLIC
           response.end(readFileSync(candidate));
           return;
         }
+      }
+
+      notFound.push(relative);
+      if (process.env.LHR_DEBUG) {
+        console.error(`  404 ${relative} (resolved ${join(outDir, relative)})`);
       }
 
       response.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
@@ -75,6 +85,7 @@ export function serveStatic(outDir = OUT_DIR, basePath = process.env.NEXT_PUBLIC
       resolve({
         origin: `http://127.0.0.1:${typeof address === "object" ? address.port : 0}`,
         prefix,
+        notFound,
         close: () => new Promise((done) => server.close(() => done())),
       });
     });
