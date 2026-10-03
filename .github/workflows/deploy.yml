@@ -63,6 +63,11 @@ jobs:
 
       - name: Lighthouse accessibility and performance thresholds
         run: npm run lighthouse
+        env:
+          # Required: without it the audit server serves the site from the root
+          # while the build references /dibasbehera, so every asset 404s and the
+          # page is measured unstyled.
+          NEXT_PUBLIC_BASE_PATH: /dibasbehera
 
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
