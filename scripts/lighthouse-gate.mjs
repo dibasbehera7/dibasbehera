@@ -122,17 +122,32 @@ function median(values) {
  * Lists the audits that dragged a category below its threshold, so a failure
  * names the offending rule instead of only a score.
  */
-function failingAudits(lhr, categoryId) {
-  const category = lhr.categories[categoryId];
+export function failingAudits(lhr, categoryId) {
+  const category = lhr?.categories?.[categoryId];
   if (!category) return [];
 
-  return category.auditRefs
-    .map((ref) => lhr.audits[ref.id])
-    .filter((audit) => audit && audit.score !== null && audit.score < 1)
-    .map(
-      (audit) =>
-        `${audit.id} (${audit.scoreDisplayMode}, score ${audit.score}): ${audit.title}`,
+  const lines = [];
+
+  for (const ref of category.auditRefs ?? []) {
+    const audit = lhr.audits?.[ref.id];
+    if (!audit || audit.score === null || audit.score >= 1) continue;
+
+    lines.push(
+      `${ref.id} (${audit.scoreDisplayMode}, score ${audit.score}): ${audit.title}`,
     );
+
+    const snippets = (audit.details?.items ?? [])
+      .flatMap((item) => [item?.node, item?.relatedNode])
+      .map((node) => node?.snippet)
+      .filter((snippet) => typeof snippet === "string")
+      .slice(0, 6);
+
+    for (const snippet of snippets) {
+      lines.push(`          ${snippet.replace(/\s+/g, " ").slice(0, 160)}`);
+    }
+  }
+
+  return lines;
 }
 const RUNS = Number(process.env.LH_RUNS ?? 3);
 
