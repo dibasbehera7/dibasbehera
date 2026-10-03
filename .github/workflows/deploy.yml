@@ -96,14 +96,14 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v4
 
-verify-live:
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
+  verify-live:
+      needs: deploy
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v5
 
-      # Confirms the published site behaves as specified, not just the build.
-      - name: Live site checks
-        run: npm run check:live
-        env:
-          SITE_URL: https://dibasbehera7.github.io/dibasbehera
+        # Confirms the published site behaves as specified, not just the build.
+        - name: Live site checks
+          run: npm run check:live
+          env:
+            SITE_URL: https://dibasbehera7.github.io/dibasbehera
