@@ -50,11 +50,15 @@
 }
 
 .navLink {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  /* Explicit sizes rather than design tokens: these are the primary touch
+     targets, so their box must not depend on a custom property resolving. */
+  min-height: 2.75rem;
+  padding: 0.5rem 1.5rem;
   color: var(--color-on-bar);
   text-decoration: none;
   font-weight: 600;
-  padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-pill);
   background: var(--color-bar-deep);
 }

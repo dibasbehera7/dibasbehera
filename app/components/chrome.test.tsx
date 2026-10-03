@@ -59,16 +59,17 @@ describe("header", () => {
     expect(css).toContain("z-index");
   });
 
-  it("spaces adjacent navigation targets far enough apart", () => {
+  it("sizes navigation targets so they clear 24px without relying on tokens", () => {
     const css = read("components/TopBar.module.css");
-    expect(css).toMatch(/\.navList\s*\{[^}]*gap:\s*var\(--target-gap\)/);
+    const rule = css.match(/\.navLink\s*\{[^}]*\}/)?.[0] ?? "";
 
-    // --target-gap must exceed the 24px WCAG 2.2 minimum, not sit on it.
-    const declared = read("globals.css").match(/--target-gap:\s*([\d.]+)rem/);
-    expect(declared).not.toBeNull();
-    expect(Number(declared![1])).toBeGreaterThan(1.5);
-  });
-  it("credits GitHub with a link to the owner's profile", () => {
+    // Explicit box, not token-driven: a custom property that fails to resolve
+    // must not silently collapse these targets to the size of their text.
+    expect(rule).toMatch(/min-height:\s*[\d.]+rem/);
+    expect(rule).toMatch(/padding:\s*[\d.]+rem/);
+    expect(rule).not.toMatch(/padding:[^;]*var\(/);
+    expect(rule).not.toMatch(/min-height:[^;]*var\(/);
+  });  it("credits GitHub with a link to the owner's profile", () => {
     render(<Footer site={site} />);
 
     const link = screen.getByRole("link", { name: /@github/i });
