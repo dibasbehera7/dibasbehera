@@ -24,10 +24,20 @@ export const viewport = {
  * `https://app.cal.com` is the only third-party origin: it loads the booking
  * embed's script and is the frame the calendar is served in. No analytics or
  * advertising origin is permitted.
+ *
+ * `'unsafe-eval'` is added in development only: React's development build uses
+ * `eval()` to reconstruct component callstacks, so omitting it makes the dev
+ * server log a console error on every page. The production build never calls
+ * `eval()`, so the deployed policy stays strict.
  */
+const scriptSrc =
+  process.env.NODE_ENV === "development"
+    ? "'self' 'unsafe-inline' 'unsafe-eval' https://app.cal.com"
+    : "'self' 'unsafe-inline' https://app.cal.com";
+
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://app.cal.com",
+  `script-src ${scriptSrc}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://app.cal.com",
   "font-src 'self' https://app.cal.com",
