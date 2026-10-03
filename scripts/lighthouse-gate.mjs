@@ -128,15 +128,11 @@ function failingAudits(lhr, categoryId) {
 
   return category.auditRefs
     .map((ref) => lhr.audits[ref.id])
-    .filter(
+    .filter((audit) => audit && audit.score !== null && audit.score < 1)
+    .map(
       (audit) =>
-        audit &&
-        audit.score !== null &&
-        audit.score < 1 &&
-        // Only weight-bearing, manually checkable audits are worth naming.
-        typeof audit.scoreDisplayMode === "binary" || audit.scoreDisplayMode === "numeric",
-    )
-    .map((audit) => `${audit.id}: ${audit.title}`);
+        `${audit.id} (${audit.scoreDisplayMode}, weight ${audit.details?.overallSavingsMs ?? ""}${audit.score}): ${audit.title}`,
+    );
 }
 
 const RUNS = Number(process.env.LH_RUNS ?? 3);
