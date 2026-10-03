@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import { extname, join } from "node:path";
+import { gzipSync } from "node:zlib";
 import { launch } from "chrome-launcher";
 import lighthouse from "lighthouse";
 
@@ -25,6 +26,36 @@ const MIME = {
   ".txt": "text/plain; charset=utf-8",
   ".json": "application/json",
 };
+
+const COMPRESSIBLE = new Set([".html", ".js", ".css", ".svg", ".txt", ".json"]);
+
+/**
+ * GitHub Pages compresses text responses and serves fingerprinted assets with a
+ * one-year immutable cache, while HTML is revalidated on every visit. The audit
+ * server mirrors both, otherwise the run penalises text compression and cache
+ * efficiency that the deployed site actually provides.
+ */
+function send(response, candidate, request) {
+  const ext = extname(candidate);
+  const body = readFileSync(candidate);
+  const headers = { "Content-Type": MIME[ext] ?? "application/octet-stream" };
+
+  headers["Cache-Control"] = candidate.includes(`${join("_next", "static")}`)
+    ? "public, max-age=31536000, immutable"
+    : "public, max-age=0, must-revalidate";
+
+  const acceptsGzip = /\bgzip\b/.test(request.headers["accept-encoding"] ?? "");
+
+  if (acceptsGzip && COMPRESSIBLE.has(ext)) {
+    const compressed = gzipSync(body);
+    response.writeHead(200, { ...headers, "Content-Encoding": "gzip", Vary: "Accept-Encoding" });
+    response.end(compressed);
+    return;
+  }
+
+  response.writeHead(200, headers);
+  response.end(body);
+}
 
 /**
  * Serves the exported site, mirroring how GitHub Pages resolves directories and
@@ -62,11 +93,8 @@ export function serveStatic(outDir = OUT_DIR, basePath = process.env.NEXT_PUBLIC
         join(outDir, relative, "index.html"),
         join(outDir, `${relative}.html`),
       ]) {
-        if (existsSync(candidate) && statSync(candidate).isFile()) {
-          response.writeHead(200, {
-            "Content-Type": MIME[extname(candidate)] ?? "application/octet-stream",
-          });
-          response.end(readFileSync(candidate));
+if (existsSync(candidate) && statSync(candidate).isFile()) {
+          send(response, candidate, request);
           return;
         }
       }
